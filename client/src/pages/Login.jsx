@@ -74,17 +74,12 @@ export default function Login() {
         transition={{ duration: 0.4 }}
         className="w-full max-w-md relative z-10"
       >
-        <div className="flex flex-col items-center mb-10">
-          <motion.div 
-            whileHover={{ scale: 1.05 }}
-            className="w-20 h-20 rounded-[28px] bg-white/[0.03] border border-white/10 flex items-center justify-center shadow-2xl backdrop-blur-xl mb-6 group"
-          >
-            <Fingerprint size={40} className="text-indigo-500 group-hover:text-indigo-400 transition-colors" />
-          </motion.div>
-          <h1 className="text-4xl font-black tracking-tighter">ACCESS_NODE</h1>
+        <div className="flex flex-col items-center mt-10 mb-10">
+          
+          <h1 className="text-4xl font-black tracking-tighter">Connect to MeetIP</h1>
           <div className="flex items-center gap-2 mt-2">
             <ShieldCheck size={12} className="text-emerald-500" />
-            <p className="text-[10px] font-black text-zinc-500 uppercase tracking-[0.4em]">Secure Session Gateway</p>
+            <p className="text-[10px] font-black text-zinc-500 uppercase tracking-[0.4em]">Secure Login Gateway</p>
           </div>
         </div>
 
@@ -106,7 +101,7 @@ export default function Login() {
 
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="space-y-2">
-              <label className="text-[10px] font-black text-zinc-600 uppercase tracking-widest ml-4">Identifier</label>
+              <label className="text-[10px] font-black text-zinc-600 uppercase tracking-widest ml-4">Email</label>
               <div className="relative group">
                 <div className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500 group-focus-within:text-indigo-500 transition-colors">
                   <Mail size={18} />
@@ -126,7 +121,7 @@ export default function Login() {
 
             <div className="space-y-2">
               <div className="flex justify-between items-center ml-4">
-                <label className="text-[10px] font-black text-zinc-600 uppercase tracking-widest">Secret Key</label>
+                <label className="text-[10px] font-black text-zinc-600 uppercase tracking-widest">Password</label>
                 <button type="button" className="text-[9px] font-black text-indigo-500 uppercase tracking-widest hover:text-indigo-400 transition-colors">Forgot?</button>
               </div>
               <div className="relative group">
@@ -163,7 +158,7 @@ export default function Login() {
                   <Loader2 size={16} className="animate-spin" />
                 ) : (
                   <>
-                    Authorize <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+                    Login <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
                   </>
                 )}
               </button>
@@ -172,9 +167,9 @@ export default function Login() {
 
           <div className="mt-10 text-center">
             <p className="text-zinc-600 text-xs font-bold">
-              UNREGISTERED NODE?{' '}
+              Don't have an account?{' '}
               <Link to="/signup" className="text-indigo-500 hover:text-indigo-400 transition-colors tracking-widest ml-1 uppercase">
-                Create_Identity
+                Create Account
               </Link>
             </p>
           </div>

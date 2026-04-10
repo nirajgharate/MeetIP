@@ -125,7 +125,7 @@ export default function JoinUsers() {
             </div>
             <div>
               <h1 className="text-xl font-bold tracking-tight">
-                Discovery Hub
+                Join Users
               </h1>
               <p className="text-[10px] text-zinc-500 uppercase tracking-[0.2em] font-black">
                 Expand your network

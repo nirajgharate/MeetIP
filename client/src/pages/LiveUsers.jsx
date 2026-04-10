@@ -109,7 +109,7 @@ export default function LiveUsers() {
             </div>
             <div>
               <h1 className="text-xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white to-zinc-500">
-                Network Nodes
+                Live Users
               </h1>
               <p className="text-[10px] text-zinc-500 uppercase tracking-[0.2em] font-black">
                 Live Directory

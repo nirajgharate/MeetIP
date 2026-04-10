@@ -51,7 +51,7 @@ export default function Settings() {
               <SettingsIcon size={24} />
             </div>
             <div>
-              <h1 className="text-lg font-black tracking-tighter">NODE_SETTINGS</h1>
+              <h1 className="text-lg font-black tracking-tighter">MeetIP SETTINGS</h1>
               <p className="text-[9px] text-zinc-600 font-black uppercase tracking-[0.3em]">Protocol Configuration v2.0</p>
             </div>
           </div>

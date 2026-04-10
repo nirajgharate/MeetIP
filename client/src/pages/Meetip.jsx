@@ -56,11 +56,7 @@ export default function Meetip() {
               to start connecting with users in real-time.
             </p>
 
-            <div className="flex items-center justify-center gap-3">
-              <span className="px-4 py-2 rounded-full bg-white/5 border border-white/10 text-[10px] font-bold text-zinc-500 uppercase tracking-widest">
-                v1.0.4 Stable
-              </span>
-            </div>
+            
           </motion.div>
         </main>
       </div>

@@ -93,11 +93,9 @@ export default function Signup() {
         animate={{ opacity: 1, y: 0 }}
         className="w-full max-w-lg relative z-10"
       >
-        <div className="flex flex-col items-center mb-8">
-          <div className="w-16 h-16 rounded-[22px] bg-gradient-to-br from-indigo-600 to-indigo-800 flex items-center justify-center shadow-2xl shadow-indigo-600/20 mb-4">
-            <Fingerprint size={32} className="text-white" />
-          </div>
-          <h1 className="text-3xl font-black tracking-tighter">MEETIP_NODE</h1>
+        <div className="flex flex-col items-center mt-8 mb-8">
+          
+          <h1 className="text-3xl font-black tracking-tighter">Create Your Account</h1>
           <p className="text-[10px] font-black text-zinc-500 uppercase tracking-[0.4em] mt-2">Initialize New Identity</p>
         </div>
 
@@ -169,7 +167,7 @@ export default function Signup() {
             <p className="text-zinc-500 text-xs font-bold">
               ALREADY REGISTERED?{' '}
               <Link to="/login" className="text-indigo-400 hover:text-indigo-300 transition-colors tracking-widest ml-1 uppercase">
-                Login_Node
+                Login Now
               </Link>
             </p>
           </div>

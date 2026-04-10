@@ -40,8 +40,8 @@ export default function PrivateStatus() {
   const defaultStatuses = [
     {
       id: 1,
-      user: "Elena Gilbert",
-      avatar: "EG",
+      user: "Kundan Chavan",
+      avatar: "KC",
       time: "22 mins ago",
       content: "Only for my close circles. 🤫",
       type: "text",
@@ -50,8 +50,8 @@ export default function PrivateStatus() {
     },
     {
       id: 2,
-      user: "Marcus Vane",
-      avatar: "MV",
+      user: "Girish Sonawane",
+      avatar: "GS",
       time: "1 hour ago",
       content: "https://images.unsplash.com/photo-1511367461989-f85a21fda167",
       type: "image",
@@ -60,8 +60,8 @@ export default function PrivateStatus() {
     },
     {
       id: 3,
-      user: "Internal Bot",
-      avatar: "IB",
+      user: "Vivek Kharawante",
+      avatar: "VK",
       time: "5 hours ago",
       content: "Privacy is a right, not a feature.",
       type: "text",

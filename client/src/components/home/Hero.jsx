@@ -32,12 +32,7 @@ const Hero = () => {
         {/* LEFT SIDE: Refined Content */}
         <div className="flex flex-col items-center lg:items-start text-center lg:text-left space-y-6">
           
-          <motion.div 
-            custom={0} initial="hidden" animate="visible" variants={fadeInUp}
-            className="px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-[10px] font-bold uppercase tracking-[0.2em]"
-          >
-            v2.0 Stable Release
-          </motion.div>
+          
 
           {/* REFINED HEADING SIZE: Smaller, balanced, and sharp */}
           <motion.h1 

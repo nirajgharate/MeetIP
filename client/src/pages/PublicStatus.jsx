@@ -242,9 +242,7 @@ export default function StatusPage() {
               <h1 className="text-lg font-black tracking-tight uppercase">
                 Public Status
               </h1>
-              <p className="text-xs uppercase text-zinc-500 tracking-[0.3em]">
-                Share text, photo, or video status updates.
-              </p>
+              
             </div>
           </div>
 

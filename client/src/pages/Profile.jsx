@@ -259,7 +259,7 @@ export default function Profile() {
             </div>
             <div>
               <h1 className="text-xs font-black uppercase tracking-[0.2em] text-zinc-400">
-                Node Configuration
+                My Profile
               </h1>
               <p className="text-[8px] text-emerald-500 font-bold uppercase tracking-widest">
                 Status: Online & Encrypted
