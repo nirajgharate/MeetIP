@@ -48,9 +48,12 @@ export const register = async (req, res) => {
 export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
+    const identifier = email?.trim();
 
-    // Find user by email
-    const user = await User.findOne({ email });
+    // Find user by email or mobile number
+    const user = await User.findOne({
+      $or: [{ email: identifier }, { mobileNumber: identifier }]
+    });
 
     if (!user) {
       return res.status(401).json({ message: 'Invalid credentials' });
