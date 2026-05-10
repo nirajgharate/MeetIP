@@ -265,7 +265,9 @@ export default function Messages() {
       <div className="flex flex-1 min-w-0">
         {/* 03. CHAT DIRECTORY (LEFT PANEL) */}
         <section
-          className={`w-80 lg:w-96 border-r border-white/5 bg-[#080808] flex flex-col shrink-0 z-10 shadow-xl relative ${selectedChat ? "hidden md:flex" : "flex"}`}
+          className={`w-80 lg:w-96 border-r border-white/5 bg-[#080808] flex flex-col shrink-0 z-10 shadow-xl relative transition-all duration-300 ${
+            showMobileSidebar || !selectedChat ? "flex" : "hidden md:flex"
+          }`}
         >
           <div className="absolute top-0 left-0 w-full h-[1px] bg-white/5" />
 
@@ -284,7 +286,11 @@ export default function Messages() {
         </section>
 
         {/* 04. ACTIVE TERMINAL (RIGHT PANEL) */}
-        <section className="flex-1 flex flex-col bg-gradient-to-b from-[#0c0c0c] to-[#0a0a0a] min-w-0 relative transition-all duration-300">
+        <section
+          className={`flex-1 flex flex-col bg-gradient-to-b from-[#0c0c0c] to-[#0a0a0a] min-w-0 relative transition-all duration-300 ${
+            showMobileSidebar && selectedChat ? "hidden md:flex" : "flex"
+          }`}
+        >
           <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-indigo-500/20 to-transparent" />
 
           {selectedChat?.isGroup ? (
@@ -292,8 +298,7 @@ export default function Messages() {
               group={selectedChat}
               myId={myId}
               onBack={() => {
-                setSelectedChat(null);
-                setShowMobileSidebar(false);
+                setShowMobileSidebar(true);
               }}
               onToggleSidebar={() => setShowMobileSidebar(!showMobileSidebar)}
             />
@@ -302,8 +307,7 @@ export default function Messages() {
               chat={selectedChat}
               myId={myId}
               onBack={() => {
-                setSelectedChat(null);
-                setShowMobileSidebar(false);
+                setShowMobileSidebar(true);
               }}
               onToggleSidebar={() => setShowMobileSidebar(!showMobileSidebar)}
             />
