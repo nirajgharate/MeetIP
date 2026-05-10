@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // Create a custom axios instance
 const api = axios.create({
-  baseURL: 'http://localhost:5003/api',
+  baseURL: 'https://meetip-2.onrender.com/api',
 });
 
 // Optional: Add a request interceptor to attach the token automatically
