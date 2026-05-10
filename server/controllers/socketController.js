@@ -5,16 +5,25 @@ export const registerSocketHandlers = (io, socket, onlineUsers) => {
   // --- PRIVATE ROOM LOGIC ---
   socket.on("joinChat", (chatId) => {
     socket.join(chatId);
-    console.log(`🔒 Node ${socket.id} joined secure room: ${chatId}`);
+    console.log(`🔒 User ${socket.userId} joined secure room: ${chatId}`);
   });
 
   // --- MESSAGING LOGIC ---
   socket.on("sendMessage", (data) => {
     const { chatId, message } = data;
+    console.log(`📩 Client sent message to room: ${chatId}`);
     if (chatId) {
-      console.log(`📩 Routing message through room: ${chatId}`);
       io.to(chatId).emit("receiveMessage", { chatId, message });
       socket.to(chatId).emit("newNotification", { chatId, message });
+    }
+  });
+
+  // --- MESSAGE SEEN LOGIC ---
+  socket.on("messageSeen", (data) => {
+    const { chatId, userId } = data;
+    console.log(`👁️ User ${userId} marked messages as seen in chat ${chatId}`);
+    if (chatId) {
+      io.to(chatId).emit("messages_seen", { chatId, seenBy: userId });
     }
   });
 

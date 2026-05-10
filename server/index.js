@@ -77,7 +77,7 @@ app.use('/api/chat', chatRoutes);
 app.use('/api/group', groupRoutes);
 app.use('/api/status', statusRoutes);
 
-const PORT = process.env.PORT || 5001;
+const PORT = process.env.PORT || 5003;
 server.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
   console.log(`📡 Socket.io interface active`);

@@ -24,6 +24,7 @@ import {
   MicOff,
   VideoOff,
   PhoneOff,
+  Menu,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
@@ -42,7 +43,7 @@ import { socket } from "../../socket/socket";
 import { blockUser } from "../../services/userService";
 import { useAuth } from "../../context/AuthContext";
 
-export default function ChatWindow({ chat, myId }) {
+export default function ChatWindow({ chat, myId, onBack, onToggleSidebar }) {
   const [msgText, setMsgText] = useState("");
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -344,45 +345,89 @@ export default function ChatWindow({ chat, myId }) {
   // ✅ FETCH HISTORY & MARK AS SEEN
   useEffect(() => {
     if (chat?._id) {
-      socket.emit("joinChat", chat._id);
-      setIsOtherUserTyping(false);
+      const joinRoomAndFetch = () => {
+        if (socket.connected) {
+          console.log("🔗 Joining chat room:", chat._id);
+          socket.emit("joinChat", chat._id);
+          setIsOtherUserTyping(false);
 
-      const fetchHistory = async () => {
-        setLoading(true);
-        try {
-          const data = await getMessages(chat._id);
-          setMessages(data);
-          await markMessagesAsSeen(chat._id);
-          socket.emit("messageSeen", { chatId: chat._id, userId: myId });
-        } catch (err) {
-          console.error("FETCH_ERROR:", err);
-        } finally {
-          setLoading(false);
+          const fetchHistory = async () => {
+            setLoading(true);
+            try {
+              const data = await getMessages(chat._id);
+              setMessages(data);
+              await markMessagesAsSeen(chat._id);
+              socket.emit("messageSeen", { chatId: chat._id, userId: myId });
+            } catch (err) {
+              console.error("FETCH_ERROR:", err);
+            } finally {
+              setLoading(false);
+            }
+          };
+          fetchHistory();
+        } else {
+          console.log("⚠️ Socket not connected yet, will retry...");
+          // Retry after a short delay
+          setTimeout(joinRoomAndFetch, 1000);
         }
       };
-      fetchHistory();
+
+      joinRoomAndFetch();
     }
   }, [chat?._id, myId]);
 
   // ✅ REAL-TIME SOCKET LISTENERS
   useEffect(() => {
+    if (!socket.connected) return;
+
+    console.log("🎧 Setting up socket listeners for chat:", chat?._id);
+
     const handleNewMessage = (payload) => {
-      if (payload.chatId !== chat?._id) return;
+      console.log("📨 Received message via socket:", payload);
+      if (!payload || !payload.message) {
+        console.log("❌ Invalid message payload");
+        return;
+      }
+
+      // Only process messages for the current chat
+      if (payload.chatId !== chat?._id) {
+        console.log(
+          "❌ Message for different chat, ignoring",
+          payload.chatId,
+          "vs",
+          chat._id,
+        );
+        return;
+      }
+
       const newMessage = payload.message;
       const senderId = newMessage.sender?._id || newMessage.sender;
-      if (senderId !== myId) {
-        setMessages((prev) => {
-          if (
-            prev.some(
-              (m) => (m._id || m.id) === (newMessage._id || newMessage.id),
-            )
-          )
-            return prev;
-          return [...prev, newMessage];
-        });
-        markMessagesAsSeen(chat._id);
-        socket.emit("messageSeen", { chatId: chat._id, userId: myId });
+
+      console.log("👤 Message sender:", senderId, "My ID:", myId);
+
+      if (senderId === myId) {
+        console.log("📤 My own message, not adding again");
+        return;
       }
+
+      console.log("✅ Adding message to UI");
+      setMessages((prev) => {
+        // Check for duplicates
+        const isDuplicate = prev.some(
+          (m) => (m._id || m.id) === (newMessage._id || newMessage.id),
+        );
+
+        if (isDuplicate) {
+          console.log("⚠️ Duplicate message, skipping");
+          return prev;
+        }
+
+        return [...prev, newMessage];
+      });
+
+      // Mark as seen
+      markMessagesAsSeen(chat._id);
+      socket.emit("messageSeen", { chatId: chat._id, userId: myId });
     };
 
     const handleStatusUpdate = (data) => {
@@ -404,7 +449,7 @@ export default function ChatWindow({ chat, myId }) {
         signalData,
         chatId,
         isVideoCall: hasVideo,
-        caller: { _id: from, username: "Incoming Call" }, // You might want to fetch user details here
+        caller: { _id: from, username: "Incoming Call" },
       });
     };
 
@@ -470,6 +515,7 @@ export default function ChatWindow({ chat, myId }) {
       setOnlineUserIds(userIds);
     };
 
+    // Set up listeners
     socket.on("receiveMessage", handleNewMessage);
     socket.on("messages_seen", handleStatusUpdate);
     socket.on(
@@ -487,7 +533,11 @@ export default function ChatWindow({ chat, myId }) {
     socket.on("callEnded", handleCallEnded);
     socket.on("onlineUsers", handleOnlineUsers);
 
+    console.log("✅ Socket listeners set up for chat:", chat._id);
+
+    // Cleanup function
     return () => {
+      console.log("🧹 Cleaning up socket listeners for chat:", chat._id);
       socket.off("receiveMessage", handleNewMessage);
       socket.off("messages_seen", handleStatusUpdate);
       socket.off("typing");
@@ -499,7 +549,7 @@ export default function ChatWindow({ chat, myId }) {
       socket.off("callEnded");
       socket.off("onlineUsers", handleOnlineUsers);
     };
-  }, [chat?._id, myId, localStream]);
+  }, [chat?._id, myId, socket.connected]);
 
   // Auto-scroll logic
   useEffect(() => {
@@ -558,7 +608,7 @@ export default function ChatWindow({ chat, myId }) {
 
     try {
       const savedMsg = await sendMessage(chat._id, formData);
-      socket.emit("sendMessage", { chatId: chat._id, message: savedMsg });
+      // Note: Socket emission is now handled by the server
       setMessages((prev) => [...prev, savedMsg]);
     } catch (err) {
       console.error("TRANSMISSION_ERROR:", err);
@@ -674,6 +724,15 @@ export default function ChatWindow({ chat, myId }) {
               exit={{ opacity: 0, x: 10 }}
               className="flex items-center gap-4"
             >
+              {/* Back button for mobile */}
+              
+              {/* Menu button for mobile sidebar */}
+              <button
+                onClick={onToggleSidebar}
+                className="md:hidden p-2 text-zinc-400 hover:text-white transition-colors"
+              >
+                <Menu size={20} />
+              </button>
               <div className="relative group">
                 <div
                   className={`w-11 h-11 rounded-2xl flex items-center justify-center text-white font-black shadow-lg uppercase ${

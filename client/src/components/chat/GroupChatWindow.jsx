@@ -20,6 +20,7 @@ import {
   Video,
   Phone,
   PhoneOff,
+  Menu,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
@@ -33,7 +34,12 @@ import {
 import { socket } from "../../socket/socket";
 import { useAuth } from "../../context/AuthContext";
 
-export default function GroupChatWindow({ group, myId }) {
+export default function GroupChatWindow({
+  group,
+  myId,
+  onBack,
+  onToggleSidebar,
+}) {
   const [msgText, setMsgText] = useState("");
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -202,7 +208,7 @@ export default function GroupChatWindow({ group, myId }) {
 
     try {
       const savedMsg = await sendMessage(group._id, formData);
-      socket.emit("sendMessage", { chatId: group._id, message: savedMsg });
+      // Note: Socket emission is now handled by the server
       setMessages((prev) => [...prev, savedMsg]);
     } catch (err) {
       console.error("TRANSMISSION_ERROR:", err);
@@ -371,6 +377,20 @@ export default function GroupChatWindow({ group, myId }) {
               exit={{ opacity: 0, x: 10 }}
               className="flex items-center gap-4"
             >
+              {/* Back button for mobile */}
+              <button
+                onClick={onBack}
+                className="md:hidden p-2 text-zinc-400 hover:text-white transition-colors"
+              >
+                <ChevronLeft size={20} />
+              </button>
+              {/* Menu button for mobile sidebar */}
+              <button
+                onClick={onToggleSidebar}
+                className="md:hidden p-2 text-zinc-400 hover:text-white transition-colors"
+              >
+                <Menu size={20} />
+              </button>
               <div className="relative group">
                 <div className="w-11 h-11 rounded-2xl flex items-center justify-center text-white font-black shadow-lg uppercase bg-purple-600/20 text-purple-400 border border-purple-500/30">
                   <Users size={16} />

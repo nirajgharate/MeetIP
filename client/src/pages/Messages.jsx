@@ -6,7 +6,7 @@ import GroupChatWindow from "../components/chat/GroupChatWindow";
 import CreateGroupModal from "../components/chat/CreateGroupModal";
 
 // ✅ Logic Imports for navigation state
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 // ✅ Hook for user identity
 import { useAuth } from "../context/AuthContext";
@@ -35,8 +35,12 @@ export default function Messages() {
   // ✅ STEP 13.5: POPUP STATE
   const [activeToast, setActiveToast] = useState(null);
 
+  // ✅ MOBILE SIDEBAR TOGGLE
+  const [showMobileSidebar, setShowMobileSidebar] = useState(false);
+
   // ✅ Logic: Access the navigation state passed from JoinUsers
   const location = useLocation();
+  const navigate = useNavigate();
 
   // ✅ Get the logged-in user from AuthContext
   const { user, loading: authLoading } = useAuth();
@@ -141,6 +145,7 @@ export default function Messages() {
     if (location.state?.autoSelectChat) {
       const incomingChat = location.state.autoSelectChat;
       setSelectedChat(incomingChat);
+      setShowMobileSidebar(false);
       setChats((prevChats) => {
         const exists = prevChats.find((c) => c._id === incomingChat._id);
         if (!exists) return [incomingChat, ...prevChats];
@@ -156,27 +161,18 @@ export default function Messages() {
   // ✅ 2. UPDATED LOGIC: Sync Real Database History
   useEffect(() => {
     const fetchInitialData = async () => {
-      // ✅ FIXED: Wait for auth to complete before fetching chats
-      if (!myId || authLoading) return;
+      if (authLoading) return;
+      if (!user) return;
 
       try {
         setLoading(true);
         const data = await getUserChats();
-        setChats((prev) => {
-          const currentSelectionId =
-            selectedChat?._id || location.state?.autoSelectChat?._id;
-          if (currentSelectionId) {
-            const otherChats = data.filter((c) => c._id !== currentSelectionId);
-            const activeChatFromServer = data.find(
-              (c) => c._id === currentSelectionId,
-            );
-            const prioritizedChat =
-              activeChatFromServer ||
-              prev.find((c) => c._id === currentSelectionId);
-            return prioritizedChat ? [prioritizedChat, ...otherChats] : data;
-          }
-          return data;
-        });
+        setChats(data);
+
+        if (!selectedChat && data.length > 0) {
+          setSelectedChat(data[0]);
+        }
+
         if (selectedChat) {
           const freshData = data.find((c) => c._id === selectedChat._id);
           if (freshData) setSelectedChat(freshData);
@@ -188,13 +184,20 @@ export default function Messages() {
       }
     };
     fetchInitialData();
-  }, [myId, authLoading]); // ✅ FIXED: Added authLoading dependency
+  }, [user, authLoading, location.state]);
+
+  useEffect(() => {
+    if (!authLoading && !user) {
+      navigate("/login");
+    }
+  }, [authLoading, user, navigate]);
 
   // ✅ GROUP CREATION HANDLER
   const handleGroupCreated = async (newGroup) => {
     // Add the new group to the chats list
     setChats((prev) => [newGroup, ...prev]);
     setSelectedChat(newGroup);
+    setShowMobileSidebar(false);
     setIsCreateGroupModalOpen(false);
 
     // Optionally refresh the chats list to ensure consistency
@@ -206,8 +209,8 @@ export default function Messages() {
     }
   };
 
-  // ✅ Show loading state while authentication is in progress
-  if (authLoading) {
+  // ✅ Show loading state while authentication or chats are loading
+  if (authLoading || loading) {
     return (
       <div className="flex h-screen bg-[#050505] text-white items-center justify-center">
         <div className="text-center">
@@ -217,8 +220,6 @@ export default function Messages() {
       </div>
     );
   }
-
- 
 
   return (
     <div className="flex h-screen bg-[#050505] text-white overflow-hidden font-sans relative">
@@ -254,17 +255,26 @@ export default function Messages() {
       />
 
       {/* 01. NAVIGATION NODE */}
-      <Sidebar />
+      <div
+        className={`${selectedChat && !showMobileSidebar ? "hidden md:flex" : "flex"} shrink-0`}
+      >
+        <Sidebar />
+      </div>
 
       {/* 02. MAIN COMMUNICATION INTERFACE */}
       <div className="flex flex-1 min-w-0">
         {/* 03. CHAT DIRECTORY (LEFT PANEL) */}
-        <section className="w-80 lg:w-96 border-r border-white/5 bg-[#080808] flex flex-col shrink-0 z-10 shadow-xl relative">
+        <section
+          className={`w-80 lg:w-96 border-r border-white/5 bg-[#080808] flex flex-col shrink-0 z-10 shadow-xl relative ${selectedChat ? "hidden md:flex" : "flex"}`}
+        >
           <div className="absolute top-0 left-0 w-full h-[1px] bg-white/5" />
 
           <ChatList
             chats={chats}
-            onSelectChat={setSelectedChat}
+            onSelectChat={(chat) => {
+              setSelectedChat(chat);
+              setShowMobileSidebar(false);
+            }}
             selectedChatId={selectedChat?._id}
             isLoading={loading}
             myId={myId}
@@ -278,9 +288,25 @@ export default function Messages() {
           <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-indigo-500/20 to-transparent" />
 
           {selectedChat?.isGroup ? (
-            <GroupChatWindow group={selectedChat} myId={myId} />
+            <GroupChatWindow
+              group={selectedChat}
+              myId={myId}
+              onBack={() => {
+                setSelectedChat(null);
+                setShowMobileSidebar(false);
+              }}
+              onToggleSidebar={() => setShowMobileSidebar(!showMobileSidebar)}
+            />
           ) : (
-            <ChatWindow chat={selectedChat} myId={myId} />
+            <ChatWindow
+              chat={selectedChat}
+              myId={myId}
+              onBack={() => {
+                setSelectedChat(null);
+                setShowMobileSidebar(false);
+              }}
+              onToggleSidebar={() => setShowMobileSidebar(!showMobileSidebar)}
+            />
           )}
         </section>
       </div>

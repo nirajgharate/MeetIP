@@ -20,7 +20,7 @@ function decodeToken(token) {
 
 // ✅ 1. Initialize Socket instance (Pointing to your backend)
 // autoConnect: false prevents connection attempts before we have a JWT
-export const socket = io("http://localhost:5000", {
+export const socket = io("http://localhost:5003", {
   autoConnect: false,
   reconnectionAttempts: 5,
   timeout: 10000,
@@ -39,6 +39,19 @@ export function connectSocket() {
     socket.connect();
     
     console.log("📡 Attempting Socket Handshake...");
+    
+    // Add connection event listeners
+    socket.on("connect", () => {
+      console.log("🔗 Socket connected successfully!", socket.id);
+    });
+    
+    socket.on("disconnect", (reason) => {
+      console.log("🔌 Socket disconnected:", reason);
+    });
+    
+    socket.on("connect_error", (error) => {
+      console.error("❌ Socket connection error:", error);
+    });
   }
 }
 

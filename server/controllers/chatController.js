@@ -101,7 +101,14 @@ export const sendMessage = async (req, res) => {
     // ✅ UPDATE CHAT: Update the 'updatedAt' field so the chat moves to the top of the list
     await Chat.findByIdAndUpdate(chatId, { latestMessage: savedMessage._id });
 
-    console.log("✅ Message Saved to DB:", fullMessage);
+    // ✅ SOCKET EMISSION: Emit to all users in the chat room (except sender)
+    const io = getIO();
+    console.log("📡 Emitting message to chat room:", chatId);
+    io.to(chatId).emit("receiveMessage", { chatId, message: fullMessage });
+    // Also emit notification to other users
+    io.to(chatId).emit("newNotification", { chatId, message: fullMessage });
+
+    console.log("✅ Message Saved to DB and Emitted via Socket:", fullMessage);
     res.status(201).json(fullMessage);
   } catch (error) {
     console.error("❌ Send Message Error:", error);
