@@ -35,27 +35,19 @@ export default function Login() {
 
     try {
       // Hit the auth service
-      const result = await login({ 
-        email: formData.identifier, 
-        password: formData.password 
+      const result = await login({
+        email: formData.identifier,
+        password: formData.password
       });
 
       // ✅ result contains { user, token }
       if (result.token) {
-        // 1. CRITICAL: Store token FIRST. 
-        // connectSocket() in AuthContext needs this immediately.
-        localStorage.setItem('token', result.token);
-
-        // 2. Update Global Context. 
-        // This triggers the socket connection handshake automatically.
-        setUser(result.user); 
-        
-        // 3. Authorization complete, move to messages terminal
-        navigate('/messages'); 
+        setUser(result.user);
+        navigate('/messages');
       }
     } catch (err) {
       // Better error parsing for backend responses
-      const errorMsg = err.response?.data?.message || err.message || "Authorization failed.";
+      const errorMsg = err.message || "Authorization failed.";
       setError(errorMsg.toUpperCase());
     } finally {
       setLoading(false);
@@ -114,6 +106,7 @@ export default function Login() {
                   required
                   disabled={loading}
                   placeholder="Email or Mobile Number"
+                  autoComplete="username"
                   className="w-full bg-white/[0.03] border border-white/10 rounded-2xl py-4 pl-12 pr-4 text-sm font-medium outline-none focus:border-indigo-500/50 focus:ring-4 focus:ring-indigo-500/10 transition-all placeholder:text-zinc-700 disabled:opacity-50"
                 />
               </div>
@@ -136,6 +129,7 @@ export default function Login() {
                   required
                   disabled={loading}
                   placeholder="••••••••"
+                  autoComplete="current-password"
                   className="w-full bg-white/[0.03] border border-white/10 rounded-2xl py-4 pl-12 pr-12 text-sm font-medium outline-none focus:border-indigo-500/50 focus:ring-4 focus:ring-indigo-500/10 transition-all placeholder:text-zinc-700 disabled:opacity-50"
                 />
                 <button 

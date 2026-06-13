@@ -7,10 +7,16 @@ import jwt from 'jsonwebtoken';
 export const register = async (req, res) => {
   try {
     const { username, email, mobileNumber, password } = req.body;
+    const normalizedEmail = email?.trim().toLowerCase();
+    const normalizedMobileNumber = mobileNumber?.trim();
+
+    if (!username?.trim() || !normalizedEmail || !normalizedMobileNumber || !password) {
+      return res.status(400).json({ message: 'All fields are required' });
+    }
 
     // Check if user already exists
     const userExists = await User.findOne({
-      $or: [{ email }, { mobileNumber }]
+      $or: [{ email: normalizedEmail }, { mobileNumber: normalizedMobileNumber }]
     });
 
     if (userExists) {
@@ -19,9 +25,9 @@ export const register = async (req, res) => {
 
     // Create user
     const user = await User.create({
-      username,
-      email,
-      mobileNumber,
+      username: username.trim(),
+      email: normalizedEmail,
+      mobileNumber: normalizedMobileNumber,
       password
     });
 
@@ -31,11 +37,13 @@ export const register = async (req, res) => {
     });
 
     res.status(201).json({
-      _id: user._id,
-      username: user.username,
-      email: user.email,
-      mobileNumber: user.mobileNumber,
-      token
+      user: {
+        _id: user._id,
+        username: user.username,
+        email: user.email,
+        mobileNumber: user.mobileNumber,
+      },
+      token,
     });
   } catch (error) {
     res.status(500).json({ message: 'Server error', error: error.message });
@@ -50,9 +58,13 @@ export const login = async (req, res) => {
     const { email, password } = req.body;
     const identifier = email?.trim();
 
+    if (!identifier || !password) {
+      return res.status(400).json({ message: 'Email or mobile number and password are required' });
+    }
+
     // Find user by email or mobile number
     const user = await User.findOne({
-      $or: [{ email: identifier }, { mobileNumber: identifier }]
+      $or: [{ email: identifier.toLowerCase() }, { mobileNumber: identifier }]
     });
 
     if (!user) {
@@ -72,11 +84,13 @@ export const login = async (req, res) => {
     });
 
     res.json({
-      _id: user._id,
-      username: user.username,
-      email: user.email,
-      mobileNumber: user.mobileNumber,
-      token
+      user: {
+        _id: user._id,
+        username: user.username,
+        email: user.email,
+        mobileNumber: user.mobileNumber,
+      },
+      token,
     });
   } catch (error) {
     res.status(500).json({ message: 'Server error', error: error.message });

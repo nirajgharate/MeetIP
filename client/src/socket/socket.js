@@ -20,7 +20,11 @@ function decodeToken(token) {
 
 // ✅ 1. Initialize Socket instance (Pointing to your backend)
 // autoConnect: false prevents connection attempts before we have a JWT
-export const socket = io("http://localhost:5003", {
+const socketUrl =
+  import.meta.env.VITE_SOCKET_URL ||
+  (import.meta.env.DEV ? window.location.origin : 'https://meetip-2.onrender.com');
+
+export const socket = io(socketUrl, {
   autoConnect: false,
   reconnectionAttempts: 5,
   timeout: 10000,

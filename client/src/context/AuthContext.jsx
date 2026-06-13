@@ -16,15 +16,16 @@ export const AuthProvider = ({ children }) => {
       if (token) {
         try {
           // Fetch the latest profile data from backend
-          const { data } = await api.get('/auth/profile'); 
+          const { data } = await api.get('/auth/profile');
           setUser(data);
-          
+
           // ✅ SESSION RESTORED: Establish Socket Tunnel
           connectSocket();
         } catch (error) {
-          console.error("Session expired or invalid token");
+          console.error("Session expired or invalid token:", error);
           localStorage.removeItem('token');
           setUser(null);
+          disconnectSocket();
         }
       }
       setLoading(false);

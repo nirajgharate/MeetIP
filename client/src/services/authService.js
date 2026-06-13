@@ -1,5 +1,24 @@
 import api from '../api/api.js';
 
+const storeSession = (data) => {
+  if (data?.token) {
+    localStorage.setItem('token', data.token);
+  }
+
+  return {
+    token: data?.token,
+    user: data?.user || {
+      _id: data?._id,
+      username: data?.username,
+      email: data?.email,
+      mobileNumber: data?.mobileNumber,
+    },
+  };
+};
+
+const getErrorMessage = (error, fallback) =>
+  error.response?.data?.message || error.message || fallback;
+
 /**
  * Register a new user
  * @param {Object} userData - Contains username, email, mobileNumber, password
@@ -7,16 +26,9 @@ import api from '../api/api.js';
 export const register = async (userData) => {
   try {
     const response = await api.post('/auth/register', userData);
-    
-    // If your backend returns a token, store it immediately
-    if (response.data.token) {
-      localStorage.setItem('token', response.data.token);
-    }
-    
-    return response.data;
+    return storeSession(response.data);
   } catch (error) {
-    // Throw error so the component can catch it and show a toast/alert
-    throw error.response?.data?.message || 'Registration failed';
+    throw new Error(getErrorMessage(error, 'Registration failed'));
   }
 };
 
@@ -27,14 +39,9 @@ export const register = async (userData) => {
 export const login = async (credentials) => {
   try {
     const response = await api.post('/auth/login', credentials);
-    
-    if (response.data.token) {
-      localStorage.setItem('token', response.data.token);
-    }
-    
-    return response.data;
+    return storeSession(response.data);
   } catch (error) {
-    throw error.response?.data?.message || 'Login failed';
+    throw new Error(getErrorMessage(error, 'Login failed'));
   }
 };
 

@@ -1,8 +1,11 @@
 import axios from 'axios';
 
-// Create a custom axios instance
+const apiBaseUrl =
+  import.meta.env.VITE_API_URL ||
+  (import.meta.env.DEV ? '/api' : 'https://meetip-2.onrender.com/api');
+
 const api = axios.create({
-  baseURL: 'https://meetip-2.onrender.com/api',
+  baseURL: apiBaseUrl,
 });
 
 // Optional: Add a request interceptor to attach the token automatically

@@ -71,13 +71,13 @@ export default function Signup() {
 
       if (result.token) {
         // ✅ 1. Store the new identity in Global State immediately
-        setUser(result); 
+        setUser(result.user);
         
         // ✅ 2. Move to the main dashboard
         navigate('/meetip'); 
       }
     } catch (err) {
-      setError(err || "Initialization failed");
+      setError(err.message || "Initialization failed");
     } finally {
       setLoading(false);
     }
