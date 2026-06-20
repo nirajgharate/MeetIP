@@ -1,0 +1,54 @@
+<svg width="1280" height="720" viewBox="0 0 1280 720" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1280" height="720" fill="#050505"/>
+  <circle cx="250" cy="120" r="260" fill="#2563eb" fill-opacity="0.14"/>
+  <circle cx="1020" cy="590" r="320" fill="#4f46e5" fill-opacity="0.16"/>
+  <rect x="80" y="70" width="1120" height="580" rx="42" fill="#0b0b0f" stroke="#27272a" stroke-width="2"/>
+  <rect x="80" y="70" width="1120" height="70" rx="42" fill="#101016"/>
+  <circle cx="125" cy="105" r="8" fill="#ef4444"/>
+  <circle cx="150" cy="105" r="8" fill="#f59e0b"/>
+  <circle cx="175" cy="105" r="8" fill="#22c55e"/>
+  <text x="220" y="113" fill="#fafafa" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="20" font-weight="700">MeetIP Communication Dashboard</text>
+  <rect x="120" y="175" width="230" height="430" rx="28" fill="#08080b" stroke="#23232a"/>
+  <rect x="150" y="210" width="70" height="70" rx="20" fill="#2563eb"/>
+  <text x="174" y="255" fill="white" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="28" font-weight="900">M</text>
+  <text x="150" y="315" fill="#ffffff" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="26" font-weight="800">MeetIP</text>
+  <text x="150" y="342" fill="#a1a1aa" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="14">Secure real-time chat</text>
+  <rect x="150" y="385" width="170" height="42" rx="14" fill="#18181b"/>
+  <text x="174" y="412" fill="#e4e4e7" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="14" font-weight="700">Messages</text>
+  <rect x="150" y="440" width="170" height="42" rx="14" fill="#111113"/>
+  <text x="174" y="467" fill="#a1a1aa" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="14" font-weight="700">Live Users</text>
+  <rect x="150" y="495" width="170" height="42" rx="14" fill="#111113"/>
+  <text x="174" y="522" fill="#a1a1aa" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="14" font-weight="700">Status</text>
+  <rect x="390" y="175" width="330" height="430" rx="28" fill="#08080b" stroke="#23232a"/>
+  <text x="425" y="220" fill="#ffffff" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="24" font-weight="800">Chats</text>
+  <text x="425" y="247" fill="#71717a" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="14">Realtime conversations</text>
+  <g>
+    <rect x="425" y="285" width="260" height="76" rx="20" fill="#111113" stroke="#27272a"/>
+    <circle cx="463" cy="323" r="20" fill="#2563eb"/>
+    <text x="497" y="318" fill="#fafafa" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="15" font-weight="800">Team Launch</text>
+    <text x="497" y="342" fill="#a1a1aa" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="13">Group chat synced</text>
+  </g>
+  <g>
+    <rect x="425" y="378" width="260" height="76" rx="20" fill="#0e0e12"/>
+    <circle cx="463" cy="416" r="20" fill="#4f46e5"/>
+    <text x="497" y="411" fill="#fafafa" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="15" font-weight="800">Niraj</text>
+    <text x="497" y="435" fill="#a1a1aa" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="13">File received</text>
+  </g>
+  <g>
+    <rect x="425" y="471" width="260" height="76" rx="20" fill="#0e0e12"/>
+    <circle cx="463" cy="509" r="20" fill="#16a34a"/>
+    <text x="497" y="504" fill="#fafafa" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="15" font-weight="800">Online Users</text>
+    <text x="497" y="528" fill="#a1a1aa" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="13">Presence active</text>
+  </g>
+  <rect x="760" y="175" width="390" height="430" rx="28" fill="#08080b" stroke="#23232a"/>
+  <text x="795" y="220" fill="#ffffff" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="24" font-weight="800">Active Chat</text>
+  <text x="795" y="247" fill="#71717a" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="14">Socket.IO powered messaging</text>
+  <rect x="795" y="295" width="230" height="54" rx="18" fill="#18181b"/>
+  <text x="820" y="328" fill="#e4e4e7" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="15">Hey, welcome to MeetIP.</text>
+  <rect x="875" y="372" width="240" height="54" rx="18" fill="#2563eb"/>
+  <text x="900" y="405" fill="#ffffff" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="15" font-weight="700">Login and signup fixed.</text>
+  <rect x="795" y="450" width="270" height="54" rx="18" fill="#18181b"/>
+  <text x="820" y="483" fill="#e4e4e7" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="15">Ready for realtime chat.</text>
+  <rect x="795" y="535" width="320" height="38" rx="19" fill="#0f0f14" stroke="#27272a"/>
+  <text x="820" y="560" fill="#71717a" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="13">Type a message...</text>
+</svg>
